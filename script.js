@@ -12,6 +12,10 @@ var currentQuestionIndex = 0;
 var time = questions.length * 15;
 var timerId;
 
+//sound effects
+var sfxRight = new Audio("assets/sfx/correct.wav");
+var sfxWrong = new Audio("assets/sfx/incorrect.wav");
+
 function startQuiz() {
   // hide start screen
   var startScreenEl = document.getElementById("start-screen");
@@ -61,7 +65,7 @@ function questionClick() {
   // check if user guessed wrong
   if (this.value !== questions[currentQuestionIndex].answer) {
     // penalize time
-    time -= 15;
+    time -= 15;    
 
     if (time < 0) {
       time = 0;
@@ -71,10 +75,12 @@ function questionClick() {
     feedbackEl.textContent = "Wrong!";
     feedbackEl.style.color = "red";
     feedbackEl.style.fontSize = "400%";
+    sfxWrong.play();
   } else {
     feedbackEl.textContent = "Correct!";
     feedbackEl.style.color = "green";
     feedbackEl.style.fontSize = "400%";
+    sfxRight.play();
   }
 
   // flash right/wrong feedback
@@ -82,7 +88,7 @@ function questionClick() {
   setTimeout(function() {
     feedbackEl.setAttribute("class", "feedback hide");
   }, 1000);
-
+  
   // next question
   currentQuestionIndex++;
 
@@ -141,7 +147,7 @@ function saveHighscore() {
     window.localStorage.setItem("highscores", JSON.stringify(highscores));
 
     // redirect to next page
-    window.location.href = "score.html";
+    window.location.href = "highscores.html";
   }
 }
 
